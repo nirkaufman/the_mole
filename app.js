@@ -53,6 +53,7 @@ function whack(event) {
 
   // When the class 'up' presents - the mole is visible
   if(event.target.classList.contains('up')) {
+    console.log("whacked");
     // the 'hit' change the mole image
     event.target.classList.replace('up', 'hit');
 
@@ -77,7 +78,7 @@ function whack(event) {
 function moleAppear() {
   // If game over, return
   if(game.gameOver) return;
-
+  //console.log("mole appear");
   // generate random number between 0 and the number of holes
   const randomNumber = generateRandomNumber(holesElements.length);
 
@@ -102,17 +103,21 @@ function moleAppear() {
   starts the game: start a counter, and call moleAppear
  */
 function startGame() {
+  console.log("game started");
   // first, set gameOver flag to false
   game.gameOver = false;
 
   // remove the start class from the first hole
   // and attach whack to the click event
   holesElements[0].classList.remove('start');
-  holesElements[0].addEventListener('click', whack);
+  holesElements[0].removeEventListener('click',startGame);
+ // holesElements[0].addEventListener('click', whack);
 
   // start a timer that updates the game time
   const timerId = setInterval(() => {
     // when the time is up (time is zero)
+    //console.log("timer decrease");
+    console.log(`time ${game.time}`)
     if(game.time === 0) {
       // stop the timer
       clearInterval(timerId);
@@ -138,7 +143,7 @@ function resetGame() {
   // reset game to initial values
   game.gameOver = true;
   game.score = 0;
-  game.time = 30;
+  game.time = 20;
 
   // sync the UI
   timerElement.innerText = game.time;
@@ -154,6 +159,5 @@ function resetGame() {
   holesElements[0].classList.add('start');
   holesElements[0].addEventListener('click', startGame);
 }
-
 
 resetGame();
